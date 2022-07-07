@@ -50,4 +50,49 @@ sudo systemctl status apache2
 
 ![Load Balancer Config](lbconf.png)
 
-- 
+- Run `sudo systemctl restart apache2` to restart apache and save changes.
+
+*Note that weused the `bytraffic` method to load balance. There are other methods like; `bybusyness`, `byrequests`, `heartbeat` etc*
+
+- To verify our configuration works, check the load balancer's public IP in a browser. It should take youto the login page.
+```
+http://<Load-Balancer-Public-IP-Address-or-Public-DNS-Name>/index.php
+```
+
+![Login page](loginpage.png)
+
+- On the webservers, run `sudo tail -f /var/log/httpd/access_log` to open the log file that logs information from the webpage.
+
+- Reload the open page in the browser several times and check the open config file in the webserver. You would notice that each new reload is logged across the webservers.
+
+![Reload page](reload.png)
+
+*I noticed the time was logging in GMT and not my local timezone*
+
+**Step 4 - Configure Local DNS Name Resolution**
+---
+
+- Sometimes it is tedious to remember the IPs of different machines especially when the number of machines starts to increase. Here, we use local DNS resolution to we can "tie" the IP of the machine to an easier name.
+
+    - Run `sudo vi /etc/hosts` to open the hosts file where hostnames are saved.
+
+    - Add the records into this file with Local IP address and arbitrary name for the Web Servers.
+    ```
+    <WebServer1-Private-IP-Address> Web1
+    <WebServer2-Private-IP-Address> Web2
+    ```
+
+    ![Hosts File](etchosts.png)
+
+-  Run `sudo vi /etc/apache2/sites-available/000-default.conf` and add the newly created hostnames.
+![Hostname](lbhostname.png)
+
+- Restart apache2.
+
+- Curl any of the webserver hostnames from the LB to confirm if local DNS is working.
+![Curl](curl.png)
+
+*Remember, this is only internal configuration and it is also local to your LB server, these names will neither be ‘resolvable’ from other servers internally nor from the Internet.*
+
+**Apache Load Balancing SOlution Deployed Successfully!**
+
