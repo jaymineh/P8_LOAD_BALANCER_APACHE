@@ -13,8 +13,8 @@
 
 - Run the commands below:
 ```
-sudo apt update
-sudo apt upgrade
+sudo apt update -y
+sudo apt upgrade -y
 sudo apt install apache2 -y
 sudo apt-get install libxml2-dev
 
@@ -37,8 +37,9 @@ sudo systemctl status apache2
 - Add the configuration line below into the <VirtualHost *:80> section.
 ```
 <Proxy "balancer://mycluster">
-               BalancerMember http://<WebServer1-Private-IP-Address>:80 loadfactor=5 timeout=1
-               BalancerMember http://<WebServer2-Private-IP-Address>:80 loadfactor=5 timeout=1
+               BalancerMember http://<Web1-Private-IP-Address>:80 loadfactor=5 timeout=1
+               BalancerMember http://<Web2-Private-IP-Address>:80 loadfactor=5 timeout=1
+               BalancerMember http://<Web3-Private-IP-Address>:80 loadfactor=5 timeout=1
                ProxySet lbmethod=bytraffic
                # ProxySet lbmethod=byrequests
         </Proxy>
@@ -52,7 +53,7 @@ sudo systemctl status apache2
 
 - Run `sudo systemctl restart apache2` to restart apache and save changes.
 
-*Note that weused the `bytraffic` method to load balance. There are other methods like; `bybusyness`, `byrequests`, `heartbeat` etc*
+*Note that we used the `bytraffic` method to load balance. There are other methods like; `bybusyness`, `byrequests`, `heartbeat` etc*
 
 - To verify our configuration works, check the load balancer's public IP in a browser. It should take youto the login page.
 ```
@@ -80,6 +81,7 @@ http://<Load-Balancer-Public-IP-Address-or-Public-DNS-Name>/index.php
     ```
     <WebServer1-Private-IP-Address> Web1
     <WebServer2-Private-IP-Address> Web2
+    <WebServer2-Private-IP-Address> Web3
     ```
 
     ![Hosts File](etchosts.png)
@@ -94,5 +96,5 @@ http://<Load-Balancer-Public-IP-Address-or-Public-DNS-Name>/index.php
 
 *Remember, this is only internal configuration and it is also local to your LB server, these names will neither be ‘resolvable’ from other servers internally nor from the Internet.*
 
-**Apache Load Balancing SOlution Deployed Successfully!**
+**Apache Load Balancing Solution Deployed Successfully!**
 
