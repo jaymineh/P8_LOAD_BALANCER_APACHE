@@ -57,6 +57,7 @@ ServerName mydomain.com
 ProxyPass / balancer://mycluster/
 ProxyPassReverse / http://mydomain.com/
 ``` 
+*Note that the above `mydomain.com` will be replaced by the domain you intend to use*
 
 - Run `sudo systemctl restart apache2` to restart apache and save changes.
 
