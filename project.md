@@ -51,6 +51,13 @@ sudo systemctl status apache2
 
 ![Load Balancer Config](lbconf.png)
 
+*If you want to configure a public domain name using Apache, add the following under the VirtualHost section*
+```
+ServerName mydomain.com
+ProxyPass / balancer://mycluster/
+ProxyPassReverse / http://mydomain.com/
+``` 
+
 - Run `sudo systemctl restart apache2` to restart apache and save changes.
 
 *Note that we used the `bytraffic` method to load balance. There are other methods like; `bybusyness`, `byrequests`, `heartbeat` etc*
