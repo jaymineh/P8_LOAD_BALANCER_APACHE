@@ -6,7 +6,7 @@
 - Spin up a new Ubuntu server for the load balancer. Open TCP port 80 in the incoming rules config as the load balancer will be receiving traffic from the internet.
 
 - Ensure that all machines are running and all services are running as well (apache2, httpd, nfs-server, mysql)
-![Cluster](allmachines.png)
+![Cluster](images/allmachines.png)
 
 **Step 2 - Installing The Load Balancer**
 ---
@@ -49,7 +49,7 @@ sudo systemctl status apache2
         ProxyPassReverse / balancer://mycluster/
 ```
 
-![Load Balancer Config](lbconf.png)
+![Load Balancer Config](images/lbconf.png)
 
 *If you want to configure a public domain name using Apache, add the following under the VirtualHost section*
 ```
@@ -68,13 +68,13 @@ ProxyPassReverse / http://mydomain.com/
 http://<Load-Balancer-Public-IP-Address-or-Public-DNS-Name>/index.php
 ```
 
-![Login page](loginpage.png)
+![Login page](images/loginpage.png)
 
 - On the webservers, run `sudo tail -f /var/log/httpd/access_log` to open the log file that logs information from the webpage.
 
 - Reload the open page in the browser several times and check the open config file in the webserver. You would notice that each new reload is logged across the webservers.
 
-![Reload page](reload.png)
+![Reload page](images/reload.png)
 
 *I noticed the time was logging in GMT and not my local timezone*
 
@@ -92,10 +92,10 @@ http://<Load-Balancer-Public-IP-Address-or-Public-DNS-Name>/index.php
     <WebServer2-Private-IP-Address> Web3
     ```
 
-    ![Hosts File](etchosts.png)
+    ![Hosts File](images/etchosts.png)
 
 -  Run `sudo vi /etc/apache2/sites-available/000-default.conf` and add the newly created hostnames.
-![Hostname](lbhostname.png)
+![Hostname](images/lbhostname.png)
 
 - Restart apache2.
 
